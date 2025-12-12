@@ -29,7 +29,7 @@ void STATSEM::checkVars() {
         }
     }
 
-    
+    /*
     // Print symbol table for testing
     std::cout << "Symbol table (variable -> declared line, initialized):\n";
     for (const auto& entry : varTable) {
@@ -37,6 +37,7 @@ void STATSEM::checkVars() {
                   << ", " << (entry.second.initialized ? "true" : "false") << "\n"
                     << "    Initial Value: " << entry.second.initValue << "\n";
     }
+    */
 
 }
 
@@ -98,4 +99,9 @@ STATSEM staticSemantics(Node* root) {
     traverse(root);
     statsem.checkVars();
     return statsem;
+}
+
+// getter for allocateStorage
+const std::map<std::string, STATSEM::VarInfo>& STATSEM::getVarTable() const {
+    return varTable;
 }

@@ -7,6 +7,6 @@
 #include "token.h"
 #include "staticSemantics.h"
 
-void traversal(Node* root, std::ofstream& out);
+void traversal(Node* root, std::ofstream& out, STATSEM& statsem);
 
 #endif 

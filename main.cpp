@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
             std::cerr << "Could not open output file: " << filename_out + ".asm" << std::endl;
             std::exit(1);
         }
-        traversal(root, out);
+        traversal(root, out, statsem);
         out.close();
     } else if (argc == 1) { // no filename read from stdin
         std::cout << "Taking keyboard input" << std::endl;
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
             std::cerr << "Could not open output file: a.asm" << std::endl;
             std::exit(1);
         }
-        traversal(root, out);
+        traversal(root, out, statsem);
         out.close();
     } else {
         std::cerr << "Usage: " << argv[0] << " <name>" << std::endl;
