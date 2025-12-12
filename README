@@ -1,0 +1,7 @@
+Tristan Harris
+
+How to compile: 
+type "make"
+
+Invocation: 
+statSem [file name]
