@@ -282,8 +282,6 @@ Node* cond() {
 
 Node* loop() {
     Node* root = new Node();
-    root->tokens.push_back(tk.instance);
-    root->line_numbers.push_back(tk.line);
     tk = scanner();
     root->type = "loop";
     if (tk.group == TokenGroup::DELIMITER && tk.instance == "[") {
