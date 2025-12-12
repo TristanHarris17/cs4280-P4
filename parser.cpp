@@ -101,7 +101,7 @@ Node* vars() {
             exit(EXIT_FAILURE);
         }
     } else {
-        // empty production -> leave tokens empty
+        return nullptr; // empty production
     }
     return root;
 }
@@ -132,7 +132,7 @@ Node* varList() {
             exit(EXIT_FAILURE);
         }
     } else {
-        // empty production -> return an empty varList node (no tokens)
+        return nullptr; // empty production
     }
     return root;
 }

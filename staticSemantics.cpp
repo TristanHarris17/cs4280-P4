@@ -5,12 +5,12 @@
 
 #include "staticSemantics.h"
 
-void STATSEM::insert(const std::string& varName, int lineNumber) {
+void STATSEM::insert(const std::string& varName, int lineNumber, int initValue) {
     if (varTable.find(varName) != varTable.end()) {
         std::cerr << "ERROR in P3 on line " << lineNumber << ": Variable '" << varName << "' already declared on line " << varTable[varName].lineDeclared << ".\n";
         exit(EXIT_FAILURE);
     }
-    varTable[varName] = {lineNumber, false};
+    varTable[varName] = {lineNumber, false, initValue};
 }
     
 bool STATSEM::verify(const std::string& varName) {
@@ -29,21 +29,22 @@ void STATSEM::checkVars() {
         }
     }
 
-    /*
+    
     // Print symbol table for testing
     std::cout << "Symbol table (variable -> declared line, initialized):\n";
     for (const auto& entry : varTable) {
         std::cout << "  " << entry.first << " -> " << entry.second.lineDeclared
-                  << ", " << (entry.second.initialized ? "true" : "false") << "\n";
+                  << ", " << (entry.second.initialized ? "true" : "false") << "\n"
+                    << "    Initial Value: " << entry.second.initValue << "\n";
     }
-    */
+
 }
 
-void staticSemantics(Node* root) {
+STATSEM staticSemantics(Node* root) {
     STATSEM statsem;
     if (!root) {
         statsem.checkVars();
-        return;
+        return statsem;
     }
 
     auto isIdentifier = [](const std::string &s) -> bool {
@@ -64,17 +65,17 @@ void staticSemantics(Node* root) {
         // Preorder handling
         if (node->type == "vars") {
             // tokens: ["int", identifier, "=", number, ... "]
-            for (size_t i = 0; i < node->tokens.size() && i < node->line_numbers.size(); ++i) {
-                const std::string &tok = node->tokens[i];
+                const std::string &tok = node->tokens[0];
+                const std::string initValue = node->tokens[1];
                 if (isIdentifier(tok)) {
-                    statsem.insert(tok, node->line_numbers[i]);
+                    statsem.insert(tok, node->line_numbers[0], std::stoi(initValue));
                 }
-            }
         } else if (node->type == "varList") {
             // tokens: [identifier, "=", number]
             if (!node->tokens.empty() && !node->line_numbers.empty()) {
                 const std::string &tok = node->tokens[0];
-                if (isIdentifier(tok)) statsem.insert(tok, node->line_numbers[0]);
+                const std::string initValue = node->tokens[1];
+                if (isIdentifier(tok)) statsem.insert(tok, node->line_numbers[0], std::stoi(initValue));
             }
         } else {
             // For all other nodes, verify any identifier tokens used
@@ -96,4 +97,5 @@ void staticSemantics(Node* root) {
 
     traverse(root);
     statsem.checkVars();
+    return statsem;
 }
