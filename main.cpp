@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "staticSemantics.h"
+#include "compiler.h"
 
 #include <fstream>
 #include <iostream>
@@ -15,12 +16,30 @@ int main(int argc, char **argv) {
         }
         initScanner(in);
         Node* root = parser();
-        staticSemantics(root);
+        testTree(root);
+        STATSEM statsem = staticSemantics(root);
+        // create output file
+        std::string filename_out = argv[1];
+        std::ofstream out(filename_out + ".asm");
+        if (!out) {
+            std::cerr << "Could not open output file: " << filename_out + ".asm" << std::endl;
+            std::exit(1);
+        }
+        traversal(root, out);
+        out.close();
     } else if (argc == 1) { // no filename read from stdin
         std::cout << "Taking keyboard input" << std::endl;
         initScanner(std::cin);
         Node* root = parser();
-        staticSemantics(root);
+        STATSEM statsem = staticSemantics(root);
+        // create output file
+        std::ofstream out("a.asm");
+        if (!out) {
+            std::cerr << "Could not open output file: a.asm" << std::endl;
+            std::exit(1);
+        }
+        traversal(root, out);
+        out.close();
     } else {
         std::cerr << "Usage: " << argv[0] << " <name>" << std::endl;
         return 1;

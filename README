@@ -4,4 +4,4 @@ How to compile:
 type "make"
 
 Invocation: 
-statSem [file name]
+compile [file name]
