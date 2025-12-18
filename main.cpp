@@ -16,7 +16,6 @@ int main(int argc, char **argv) {
         }
         initScanner(in);
         Node* root = parser();
-        testTree(root);
         STATSEM statsem = staticSemantics(root);
         // create output file
         std::string filename_out = argv[1];

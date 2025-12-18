@@ -35,7 +35,7 @@ void allocateStorage(STATSEM& statsem, std::ofstream& out) {
 // traversal implementation
 static void traversal_impl(Node* root, std::ofstream& out) {
     if (!root) return;
-    std::cout << "Visiting " << root->type << std::endl;
+    //std::cout << "Visiting " << root->type << std::endl;
     // if else to generate code based on node type
     if (root->type == "read") {
         // read input into variable
